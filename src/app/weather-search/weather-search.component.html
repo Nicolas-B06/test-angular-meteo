@@ -1,1 +1,50 @@
-<p>weather-search works!</p>
+<div class="max-w-lg mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
+    <div class="flex flex-col items-center">
+        <h1 class="font-extrabold text-4xl mb-4">Météo</h1>
+      <input [(ngModel)]="city" 
+             placeholder="Entrez une ville"
+             class="w-full p-2 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+      <div class="flex space-x-4 mb-4">
+        <button (click)="searchWeather()"
+                class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400">
+          Rechercher
+        </button>
+        <button (click)="getLocation()"
+                class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400">
+          Utiliser ma position actuelle
+        </button>
+      </div>
+  
+      <!-- Affichage des informations météo -->
+      <div *ngIf="weatherData && weatherData.length > 0" class="w-full mt-6 text-center">
+        <h2 class="text-2xl font-bold text-gray-700 mb-2">
+          Météo pour {{ city }}
+        </h2>
+        <img [src]="'https://www.weatherbit.io/static/img/icons/' + weatherData[0].weather.icon + '.png'"
+             alt="Icône météo" class="mx-auto mb-2"
+        />
+        <p class="text-xl text-gray-600">Température actuelle : <span class="font-bold">{{ weatherData[0].temp }} °C</span></p>
+        <p class="text-gray-500">{{ weatherData[0].weather.description }}</p>
+  
+        <!-- 7 next days -->
+        <h3 class="text-xl font-semibold mt-6 text-gray-700">Prévisions pour les {{ weatherData.length }} prochains jours :</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+          <div *ngFor="let day of weatherData" class="p-4 bg-blue-50 rounded-lg shadow-md">
+            <h4 class="text-lg font-bold">{{ day.datetime }}</h4>
+            <img [src]="'https://www.weatherbit.io/static/img/icons/' + day.weather.icon + '.png'"
+                 alt="Icône météo" class="mx-auto my-2"
+            />
+            <p class="text-gray-600">Max : <span class="font-bold">{{ day.max_temp }} °C</span></p>
+            <p class="text-gray-600">Min : <span class="font-bold">{{ day.min_temp }} °C</span></p>
+            <p class="text-gray-500">{{ day.weather.description }}</p>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Loader -->
+      <div *ngIf="isLoading" class="loader mt-6"></div>
+    </div>
+  </div>
+  
+  

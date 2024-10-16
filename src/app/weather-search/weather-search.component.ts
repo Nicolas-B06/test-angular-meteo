@@ -3,37 +3,8 @@ import { WeatherService } from '../weather.service';
 
 @Component({
   selector: 'app-weather-search',
-  template: `
-  <div>
-  <input [(ngModel)]="city" placeholder="Entrez une ville" />
-  <button (click)="searchWeather()">Rechercher</button>
-  <button (click)="getLocation()">Utiliser ma position actuelle</button>
-
-</div>
-
-<div *ngIf="isLoading" class="loader"></div>
-
-
-<!-- Current day -->
-<div *ngIf="weatherData">
-  <h2>Météo pour {{ weatherData.location.name }}</h2>
-  <img [src]="weatherData.current.condition.icon" alt="Icône météo">
-  <p>Température actuelle : {{ weatherData.current.temp_c }} °C</p>
-  <p>Condition : {{ weatherData.current.condition.text }}</p>
-  <p>Vent : {{ weatherData.current.wind_kph }} km/h</p>
-  <p>Humidité : {{ weatherData.current.humidity }}%</p>
-
-<!-- 7 next days -->
-  <h3>Prévisions sur {{ weatherData.forecast.forecastday.length }} jours :</h3>
-  <div *ngFor="let day of weatherData.forecast.forecastday">
-    <h4>{{ day.date }}</h4>
-    <img [src]="day.day.condition.icon" alt="Icône météo">
-    <p>Température maximale : {{ day.day.maxtemp_c }} °C</p>
-    <p>Température minimale : {{ day.day.mintemp_c }} °C</p>
-    <p>Condition : {{ day.day.condition.text }}</p>
-  </div>
-</div>v
-  `,
+  templateUrl: './weather-search.component.html',
+  styleUrls: ['./weather-search.component.css']
 })
 export class WeatherSearchComponent {
   @Input() city: string = '';
@@ -57,22 +28,22 @@ export class WeatherSearchComponent {
       return;
     }
   
-   
     localStorage.setItem('lastCity', this.city);
   
     this.isLoading = true;
   
-    this.weatherService.getForecast(this.city).subscribe(
-      data => {
-        this.weatherData = data;
+    this.weatherService.getForecast(this.city).subscribe({
+      next: data => {
+        this.weatherData = data.data;
         this.isLoading = false;
       },
-      error => {
+      error: error => {
         alert('Ville non trouvée ou problème avec l\'API.');
         this.isLoading = false;
       }
-    );
-  }  
+    });
+  }
+  
 
   getLocation() {
     this.isLoading = true;
@@ -97,7 +68,7 @@ export class WeatherSearchComponent {
   getWeatherByCoordinates(lat: number, lon: number) {
     this.weatherService.getWeatherByCoordinates(lat, lon).subscribe(
       data => {
-        this.weatherData = data;
+        this.weatherData = data.data;
         this.isLoading = false;
       },
       error => {
@@ -106,5 +77,6 @@ export class WeatherSearchComponent {
       }
     );
   }
+  
 }
 

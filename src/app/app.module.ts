@@ -7,12 +7,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { WeatherSearchComponent } from './weather-search/weather-search.component';
 import { WeatherDisplayComponent } from './weather-display/weather-display.component';
+import { MyIfDirective } from './my-if.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     WeatherSearchComponent,
-    WeatherDisplayComponent
+    WeatherDisplayComponent,
+    MyIfDirective
   ],
   imports: [
     BrowserModule,

@@ -12,12 +12,12 @@ export class WeatherService {
   constructor(private http: HttpClient) { }
 
   getForecast(city: string, days: number = 7): Observable<any> {
-    const forecastUrl = `http://api.weatherapi.com/v1/forecast.json?key=${this.apiKey}&q=${city}&days=${days}`;
+    const forecastUrl = `https://api.weatherbit.io/v2.0/forecast/daily?city=${city}&key=${this.apiKey}&days=${days}&lang=fr`;
     return this.http.get(forecastUrl);
   }
   
   getWeatherByCoordinates(lat: number, lon: number, days: number = 7): Observable<any> {
-    const url = `http://api.weatherapi.com/v1/forecast.json?key=${this.apiKey}&q=${lat},${lon}&days=${days}`;
+    const url = `http://api.weatherapi.com/v1/forecast.json?key=${this.apiKey}&lat=${lat}&lon=${lon}&days=${days}&lang=fr`;
     return this.http.get(url);
   }
   
